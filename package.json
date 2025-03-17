@@ -1,0 +1,25 @@
+{
+  "name": "transip-domain-catcher",
+  "version": "0.1.0",
+  "description": "Tool to automatically catch domains coming out of quarantine",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "test:credentials": "node src/testCredentials.js"
+  },
+  "keywords": [
+    "domain",
+    "transip",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

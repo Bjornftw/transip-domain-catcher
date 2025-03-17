@@ -1,0 +1,13 @@
+services:
+  transip-domain-catcher:
+    build: .
+    image: bjornftw/transip-domain-catcher
+    container_name: transip-domain-catcher
+    restart: unless-stopped
+    volumes:
+      - ./logs:/usr/src/app/logs
+      - ./config:/usr/src/app/config
+    environment:
+      - TRANSIP_ACCESS_TOKEN=your_access_token_here
+      - CHECK_INTERVAL_SECONDS=15
+      - DOMAINS=example.com,example.org
