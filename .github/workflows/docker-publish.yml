@@ -9,10 +9,12 @@ on:
         default: '1.0.0'
 
 env:
-  # Use docker.io for Docker Hub if empty
-  REGISTRY: docker.io
-  # github.repository as <account>/<repo>
-  IMAGE_NAME: bjornftw/transip-domain-catcher
+  # Docker Hub registry
+  DOCKERHUB_REGISTRY: docker.io
+  DOCKERHUB_IMAGE: bjornftw/transip-domain-catcher
+  # GitHub Container Registry
+  GHCR_REGISTRY: ghcr.io
+  GHCR_IMAGE: ${{ github.repository }}
 
 jobs:
   build:
@@ -35,18 +37,32 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Set up manual tags
-      - name: Set up Docker tags
-        id: meta
-        run: echo "This step is kept for compatibility but no longer needed"
+      # Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build and push Docker image
-      - name: Build and push Docker image
-        id: build-and-push
+      # Build and push Docker image to Docker Hub
+      - name: Build and push Docker image to Docker Hub
+        id: build-and-push-dockerhub
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.event.inputs.version }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.DOCKERHUB_IMAGE }}:${{ github.event.inputs.version }}
+            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.DOCKERHUB_IMAGE }}:latest
+
+      # Build and push Docker image to GitHub Container Registry
+      - name: Build and push Docker image to GitHub Container Registry
+        id: build-and-push-ghcr
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE }}:${{ github.event.inputs.version }}
+            ${{ env.GHCR_REGISTRY }}/${{ env.GHCR_IMAGE }}:latest
