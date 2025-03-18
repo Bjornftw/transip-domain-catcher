@@ -14,7 +14,7 @@ env:
   DOCKERHUB_IMAGE: bjornftw/transip-domain-catcher
   # GitHub Container Registry
   GHCR_REGISTRY: ghcr.io
-  GHCR_IMAGE: ${{ github.repository }}
+  GHCR_IMAGE: bjornftw/transip-domain-catcher
 
 jobs:
   build:
