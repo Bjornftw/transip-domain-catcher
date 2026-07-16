@@ -7,7 +7,9 @@ services:
     volumes:
       - ./logs:/usr/src/app/logs
       - ./config:/usr/src/app/config
+
     environment:
-      - TRANSIP_ACCESS_TOKEN=your_access_token_here
+      - TRANSIP_USERNAME=${TRANSIP_USERNAME}
+      - TRANSIP_PRIVATE_KEY_FILE=/usr/src/app/config/transip.key
       - CHECK_INTERVAL_SECONDS=15
-      - DOMAINS=example.com,example.org
+      - DOMAINS=example.com, example.org
