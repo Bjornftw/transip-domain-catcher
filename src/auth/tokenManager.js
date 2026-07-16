@@ -8,6 +8,7 @@ class TokenManager {
     this.baseURL = 'https://api.transip.nl/v6';
     this.token = null;
     this.tokenExpiry = null;
+    this.tokenFile = '/usr/src/app/config/transip-token.json';
   }
 
   /**
@@ -23,6 +24,18 @@ class TokenManager {
     // Return cached token if still valid
     if (this.token && this.tokenExpiry && new Date() < this.tokenExpiry) {
       return this.token;
+    }
+
+    if (fs.existsSync(this.tokenFile)) {
+      const stored = JSON.parse(
+        fs.readFileSync(this.tokenFile, 'utf8')
+      );
+
+      if (stored.token && new Date(stored.expiry) > new Date()) {
+        this.token = stored.token;
+        this.tokenExpiry = new Date(stored.expiry);
+        return this.token;
+      }
     }
 
     return await this.createToken();
@@ -76,6 +89,16 @@ class TokenManager {
     );
 
     this.token = response.data.token;
+
+    this.tokenExpiry = new Date(Date.now() + (25 * 60 * 1000));
+
+    fs.writeFileSync(
+      this.tokenFile,
+      JSON.stringify({
+        token: this.token,
+        expiry: this.tokenExpiry
+      }, null, 2)
+    );
 
     // TransIP tokens are short lived.
     // Refresh a little before expiry.
