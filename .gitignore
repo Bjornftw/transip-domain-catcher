@@ -56,3 +56,6 @@ docker-compose.override.yml
 # Miscellaneous
 .cache/
 .eslintcache
+
+#Private key
+config/transip.key
