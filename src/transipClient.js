@@ -1,5 +1,6 @@
 const axios = require('axios');
 require('dotenv').config();
+const tokenManager = require('./auth/tokenManager');
 
 /**
  * TransIP REST API Client Implementation (API v6)
@@ -29,7 +30,7 @@ class TransIPClient {
    */
   async authenticate() {
     try {
-      this.token = process.env.TRANSIP_ACCESS_TOKEN;
+      this.token = await tokenManager.getToken();
       
       await axios.get(`${this.baseURL}/api-test`, {
         headers: {
