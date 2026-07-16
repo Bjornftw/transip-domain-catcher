@@ -11,5 +11,6 @@ services:
     environment:
       - TRANSIP_USERNAME=${TRANSIP_USERNAME}
       - TRANSIP_PRIVATE_KEY_FILE=/usr/src/app/config/transip.key
+      - TRANSIP_TOKEN_LABEL=${TRANSIP_TOKEN_LABEL}
       - CHECK_INTERVAL_SECONDS=15
       - DOMAINS=example.com, example.org

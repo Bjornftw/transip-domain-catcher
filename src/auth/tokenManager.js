@@ -50,7 +50,7 @@ class TokenManager {
       nonce: crypto.randomBytes(16).toString('hex'),
       read_only: false,
       expiration_time: '30 minutes',
-      label: 'transip-domain-catcher',
+      label: process.env.TRANSIP_TOKEN_LABEL || 'transip-domain-catcher',
       global_key: true
     };
 
