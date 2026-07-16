@@ -1,16 +1,16 @@
 services:
   transip-domain-catcher:
-    build: .
     image: bjornftw/transip-domain-catcher
     container_name: transip-domain-catcher
     restart: unless-stopped
-    volumes:
-      - ./logs:/usr/src/app/logs
-      - ./config:/usr/src/app/config
 
     environment:
       - TRANSIP_USERNAME=${TRANSIP_USERNAME}
-      - TRANSIP_PRIVATE_KEY_FILE=/usr/src/app/config/transip.key
+      - TRANSIP_PRIVATE_KEY_FILE=${TRANSIP_PRIVATE_KEY_FILE}
       - TRANSIP_TOKEN_LABEL=${TRANSIP_TOKEN_LABEL}
-      - CHECK_INTERVAL_SECONDS=15
-      - DOMAINS=example.com, example.org
+      - DOMAINS=${DOMAINS}
+      - CHECK_INTERVAL_SECONDS=${CHECK_INTERVAL_SECONDS}
+
+    volumes:
+      - ./config:/usr/src/app/config
+      - ./logs:/usr/src/app/logs
